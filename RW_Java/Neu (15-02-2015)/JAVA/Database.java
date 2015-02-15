@@ -28,6 +28,9 @@ public class Database {
 
 	// Attribute fuer die DB Connection sowie der Graphviz Pfad
 	
+	String homed;
+	
+	
 	String graphvizpath="", 
 		   passwort = "",
 		   db_server = "",
@@ -73,12 +76,9 @@ public class Database {
 		try {
 
 			if(output.equals("er")){
+				homed = System.getProperty("user.dir");
 				
-				Runtime.getRuntime().exec(graphvizpath+"neato.exe -Tpdf -o\""+graphvizpath+"\\"+databasename+".pdf\" "+graphvizpath+"\\ERD_"+databasename+".dot");
-				System.out.println("Info:");
-				System.out.println("");
-				System.out.println("Name: ER_"+databasename+".png");
-				System.out.println("Location: "+"//ER_"+databasename+".png");
+				Runtime.getRuntime().exec(graphvizpath+"\\neato.exe -Tpng -o\""+homed+"\\"+databasename+".png\" "+homed+"\\ERD_"+databasename+".dot");
 				
 			}
 		} catch (IOException e) {
@@ -269,6 +269,8 @@ public class Database {
 	
 	private void ERD(String filename) {
 		
+		homed = System.getProperty("user.dir");
+		
 		Writer writer = null;
 		try {
 			
@@ -378,6 +380,10 @@ public class Database {
 			errors = (error);
 			
 		} 
+		System.out.println("Info:");
+		System.out.println("");
+		System.out.println("Name: ER_"+databasename+".png");
+		System.out.println("Location: "+"//ER_"+databasename+".png");
 	}
 
 	/**
@@ -498,7 +504,7 @@ public class Database {
 				System.out.println("Info:");
 				System.out.println("Filename: RM_rucksalt_V2_" + databasename+ ".html");
 				System.out.println("Location: "+filename + "\\RM_rucksalt_V2_" + databasename+ ".html");
-				System.out.println("");
+				System.out.println();
 				
 				if(errors.equals("")&&output.equals("rm")){
 					System.out.println("Generieren und Speichern des RM ohne Fehler (HTML Version)");
