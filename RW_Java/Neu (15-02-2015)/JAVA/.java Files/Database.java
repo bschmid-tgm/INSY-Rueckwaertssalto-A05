@@ -1,7 +1,6 @@
 package rw;
 
 import java.io.BufferedWriter;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -12,6 +11,7 @@ import java.sql.ResultSet;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
+
 
 import com.mysql.jdbc.Statement;
 
@@ -73,17 +73,29 @@ public class Database {
 		System.out.println(errors);
 		
 
-		try {
-
-			if(output.equals("er")){
-				homed = System.getProperty("user.dir");
-				
-				Runtime.getRuntime().exec(graphvizpath+"\\neato.exe -Tpng -o\""+homed+"\\"+databasename+".png\" "+homed+"\\ERD_"+databasename+".dot");
-				
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(output.equals("er")){
+			homed = System.getProperty("user.dir");
+			
+			try {
+	            String executable = graphvizpath + "\\dot.exe";
+	            String output = homed +"ERD_"+databasename+ ".pdf";
+	            String input = homed +"ERD_"+databasename+ ".dot";
+	            
+	            Runtime rt = Runtime.getRuntime();
+	            Process proc = rt.exec(executable + " -Tpfd -O " + output + " " + input);
+	            int exitVal = proc.waitFor();
+	            System.out.println(exitVal);
+	            if (exitVal == 1) {
+	                System.out.println("Conversion finished");
+	            }
+	            System.out.println(executable + " -Tpdf -O " + output + " " + input);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        } catch (InterruptedException e) {
+	            e.printStackTrace();
+	        }
 		}
+			
 	}
 
 	private void checkInput(String arg[]) {
@@ -270,11 +282,12 @@ public class Database {
 	private void ERD(String filename) {
 		
 		homed = System.getProperty("user.dir");
-		
+		filename = "ERD_"+databasename+ ".dot";
 		Writer writer = null;
 		try {
 			
-			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename + "\\ERD_" + databasename+ ".dot"), "utf-8"));
+			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filename)));
+			//System.out.println(filename);
 			String s = "";
 			
 			/*
@@ -380,10 +393,6 @@ public class Database {
 			errors = (error);
 			
 		} 
-		System.out.println("Info:");
-		System.out.println("");
-		System.out.println("Name: ER_"+databasename+".png");
-		System.out.println("Location: "+"//ER_"+databasename+".png");
 	}
 
 	/**
@@ -393,6 +402,7 @@ public class Database {
 	 * 
 	 * @param filename homepath of the user
 	 */
+	
 	private void RM_TXT(String filename) {
 		
 		Writer writer = null;
