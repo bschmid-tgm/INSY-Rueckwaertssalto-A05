@@ -17,7 +17,7 @@ public class Main {
 			String url = "jdbc:mysql://localhost/"; 
 			String dbName = "premiere";
 			String userName = "root"; 
-			String password = "DzDh741852963!";
+			String password = "";
 			String sortierung = "";
 			String trennzeichen = ";";
 			String tabellenname = "";
